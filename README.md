@@ -172,4 +172,4 @@ pd.Series(['a', 'b', 'c']).path / pd.Series(['1', '2', '3']).path
 
 That's all folks, enjoy!
 
-Developed and maintained by your friends at [DrivenData]().
+Developed and maintained by your friends at DrivenData! [ml competitions](https://www.drivendata.org/) | [ai consulting](http://drivendata.co/)
