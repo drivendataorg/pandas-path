@@ -96,7 +96,7 @@ def test_operators(sample_series, sample_paths):
     assert ("new_root" / sample_series.path).tolist() == expected
 
     # chaining - error
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         sample_series.path.parent.path / "new_folder" / "new_file"
 
     # chaining - explicit
@@ -117,8 +117,9 @@ def test_elementwise(pd, sample_series, sample_paths):
     assert (sample_series.path.parent.path / to_append).tolist() == expected
     assert (sample_series.path.parent.path / np.array(to_append)).tolist() == expected
     assert (sample_series.path.parent.path / pd.Series(to_append)).tolist() == expected
-    assert (sample_series.path.parent.path / pd.Series(to_append).path).tolist() == expected
-
+    assert (
+        sample_series.path.parent.path / pd.Series(to_append).path
+    ).tolist() == expected
 
     expected = [str(p / Path(f)) for f, p in zip(sample_paths, to_prepend)]
     assert (to_prepend / sample_series.path).tolist() == expected
@@ -130,7 +131,7 @@ def test_elementwise(pd, sample_series, sample_paths):
 
     # methods
     # with_suffix
-    suffixes = np.random.choice(['.txt', '.py', '.jpeg'], size=len(sample_series))
+    suffixes = np.random.choice([".txt", ".py", ".jpeg"], size=len(sample_series))
 
     expected = [str(Path(f).with_suffix(s)) for f, s in zip(sample_paths, suffixes)]
     assert sample_series.path.with_suffix(suffixes).tolist() == expected

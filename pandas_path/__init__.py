@@ -1,1 +1,1 @@
-from .accessor import PathAccessor
+from .accessor import PathAccessor  # noqa

@@ -1,4 +1,3 @@
-import inspect
 from pathlib import Path
 from types import FunctionType, LambdaType, MethodType
 
@@ -19,7 +18,7 @@ class PathAccessor:
 
         Note: May not be performant on extremely long lists since we cast to `Path`
         for every operation.
-    
+
     Raises
     ------
     AttributeError
@@ -103,10 +102,12 @@ class PathAccessor:
             index=self._obj.index,
         )
 
-        return elementwise_result 
+        return elementwise_result
 
     def _path_join(self, other, side):
-        if isinstance(other, (list, tuple, np.ndarray, pd.Series, pd.Index, PathAccessor)):
+        if isinstance(
+            other, (list, tuple, np.ndarray, pd.Series, pd.Index, PathAccessor)
+        ):
             return self._elementwise(other, side)
         else:
             return self.__getattr__(side)(other)
