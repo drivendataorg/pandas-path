@@ -1,6 +1,6 @@
 # `pandas_path` - Path style access for pandas
 
- [![PyPI](https://img.shields.io/pypi/v/pandas_path.svg)](https://pypi.org/project/pandas_path/)
+ [![PyPI](https://img.shields.io/pypi/v/pandas-path.svg)](https://pypi.org/project/pandas-path/)
 
 Love [`pathlib.Path`]()*? Love pandas? Wish it were easy to use pathlib methods on pandas Series?
 
