@@ -31,7 +31,7 @@ setup(
         "Source Code": "https://github.com/drivendataorg/pandas-path",
         "DrivenData": "http://drivendata.co",
     },
-    version="0.1.1",
+    version="0.1.2",
     author="DrivenData",
     author_email="info@drivendata.org",
     include_package_data=True,
