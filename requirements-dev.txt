@@ -3,3 +3,4 @@
 black
 flake8
 pytest
+twine

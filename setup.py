@@ -40,7 +40,7 @@ setup(
     long_description_content_type="text/markdown",
     license="MIT",
     packages=setuptools.find_packages(),
-    keywords=["data science",],
+    keywords=["data science"],
     python_requires=">=3.6",
     install_requires=requirements,
     classifiers=[
