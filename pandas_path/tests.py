@@ -116,7 +116,8 @@ def test_operators(sample_series, sample_paths):
     assert (
         (sample_series.path.parent.path / Path("new_file.txt"))
         == (
-            (sample_series.path.parent.replace(".", "") + os.sep).str.lstrip("./") + "new_file.txt"
+            (sample_series.path.parent.replace(".", "") + os.sep).str.lstrip("." + os.sep)
+            + "new_file.txt"
         )
     ).all()
 
