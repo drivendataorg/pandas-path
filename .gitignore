@@ -1,1 +1,9 @@
 *.pyc
+
+*.egg-info/
+
+.vscode/
+
+htmlcov/
+.coverage
+coverage*

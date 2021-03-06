@@ -1,12 +1,15 @@
-reqs:
+requirements:
 	pip install -r requirements-dev.txt
 
 test: lint
 	py.test -vv pandas_path/tests.py
 
 lint:
-	black .
+	black --check .
 	flake8 .
+
+format:
+	black .
 
 clean_pycache:
 	find . -name *.pyc -delete && find . -name __pycache__ -delete
