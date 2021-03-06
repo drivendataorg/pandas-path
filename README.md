@@ -246,6 +246,27 @@ pd.Series(['a', 'b', 'c']).path / pd.Series(['1', '2', '3']).path
 # dtype: object
 ```
 
+3. `Path` object on the left-hand side of a join (Python < 3.8)
+
+Due to a [bug in Python](https://bugs.python.org/issue34775), this never gets handed off to us.
+
+```python
+Path("dir") / pd.Series(['a', 'b', 'c']).path
+
+#  TypeError: expected str, bytes or os.PathLike object, not PathAccessor
+```
+
+Workaround is to use a str on the left-hand side:
+
+```python
+str(Path("dir")) / pd.Series(['a', 'b', 'c']).path
+
+# 0    dir/a
+# 1    dir/b
+# 2    dir/c
+# dtype: object
+```
+
 
 That's all folks, enjoy!
 

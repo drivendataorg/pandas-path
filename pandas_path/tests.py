@@ -106,10 +106,11 @@ def test_operators(sample_series, sample_paths):
         (sample_series.path.parent.path / "new_sub_folder").path / "new_file.txt"
     ).tolist() == expected
 
-    # left-hand path object
-    assert (
-        (Path("new_folder") / sample_series.path) == ("new_folder" + os.sep + sample_series)
-    ).all()
+    # left-hand path object (only supported Python > 3.7 because of https://bugs.python.org/issue34775)
+    if sys.version_info.major >= 3 and sys.version_info.minor >= 8:
+        assert (
+            (Path("new_folder") / sample_series.path) == ("new_folder" + os.sep + sample_series)
+        ).all()
 
     # right-hand path object
     assert (
