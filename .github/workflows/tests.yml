@@ -36,8 +36,8 @@ jobs:
         shell: bash
         run: |
           make dist
-          python -m pip install dist/pandas-path-*.whl --no-deps --force-reinstall
-          python -m pip install dist/pandas-path-*.tar.gz --no-deps --force-reinstall
+          python -m pip install dist/pandas_path-*.whl --no-deps --force-reinstall
+          python -m pip install dist/pandas_path-*.tar.gz --no-deps --force-reinstall
       - name: Upload coverage to codecov
         if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1
