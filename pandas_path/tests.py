@@ -1,4 +1,5 @@
-from pathlib import Path
+import os
+from pathlib import Path, PureWindowsPath
 import sys
 
 import numpy as np
@@ -105,6 +106,19 @@ def test_operators(sample_series, sample_paths):
         (sample_series.path.parent.path / "new_sub_folder").path / "new_file.txt"
     ).tolist() == expected
 
+    # left-hand path object
+    assert (
+        (Path("new_folder") / sample_series.path) == ("new_folder" + os.sep + sample_series)
+    ).all()
+
+    # right-hand path object
+    assert (
+        (sample_series.path.parent.path / Path("new_file.txt"))
+        == (
+            (sample_series.path.parent.replace(".", "") + os.sep).str.lstrip("./") + "new_file.txt"
+        )
+    ).all()
+
 
 def test_elementwise(pd, sample_series, sample_paths):
     # operators
@@ -131,3 +145,18 @@ def test_elementwise(pd, sample_series, sample_paths):
 
     expected = [str(Path(f).with_suffix(s)) for f, s in zip(sample_paths, suffixes)]
     assert sample_series.path.with_suffix(suffixes).tolist() == expected
+
+
+def test_custom_accessor(pd, sample_paths):
+    from pandas_path import register_path_accessor
+
+    register_path_accessor("win", PureWindowsPath)
+
+    win_series = pd.Series(
+        [
+            "c:\\test\\f1.txt",
+            "c:\\test2\\f2.txt",
+        ]
+    )
+
+    assert (win_series.win.parent == (win_series.str.rsplit("\\", 1).str[0])).all()

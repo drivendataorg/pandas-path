@@ -1,8 +1,10 @@
 # `pandas_path` - Path style access for pandas
 
- [![PyPI](https://img.shields.io/pypi/v/pandas-path.svg)](https://pypi.org/project/pandas-path/)
+[![PyPI](https://img.shields.io/pypi/v/pandas-path.svg)](https://pypi.org/project/pandas-path/)
+[![tests](https://github.com/drivendataorg/pandas-path/workflows/tests/badge.svg?branch=master)](https://github.com/drivendataorg/pandas-path/actions?query=workflow%3Atests+branch%3Amaster)
+[![codecov](https://codecov.io/gh/drivendataorg/pandas-path/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/pandas-path)
 
-Love [`pathlib.Path`]()*? Love pandas? Wish it were easy to use pathlib methods on pandas Series?
+Love [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html)*? Love pandas? Wish it were easy to use pathlib methods on pandas Series?
 
 This package is for you. Just one import adds a `.path` accessor to any pandas Series or Index so that you can use all of the methods on a `Path` object.
 
@@ -104,6 +106,79 @@ file_paths.path.parent.path / ["other_file1.txt", "other_file2.txt", "other_file
 # dtype: object
 ```
 
+### Custom path accessors
+
+Some libraries (such as [`cloudpathlib`](https://cloudpathlib.drivendata.org/), which support path operations for AWS S3,
+Azure Blobs, and Google Cloud Storage) implement the `Path` interface in other contexts. You can use `pandas-path` to
+register and use any class that implements `Path`. For example:
+
+```python
+import pandas as pd
+from pandas_path import register_path_accessor
+from cloudpathlib import S3Path
+
+# creates an accessor ".s3" that creates s3 paths
+register_path_accessor("s3", S3Path)
+
+test = pd.Series(
+    S3Path("s3://ladi/Images/FEMA_CAP/2020/70349").iterdir()
+)
+
+test.s3.bucket
+#> 0      ladi
+#> 1      ladi
+#>        ... 
+#> 577    ladi
+#> 578    ladi
+#> Length: 579, dtype: object
+```
+
+If you need to pass specific args or kwargs to the path instantiation, you can pass those at registration time. For example,
+`S3Path` can be passed an `S3Client` with explicit credentials.
+
+
+```python
+import pandas as pd
+from pandas_path import register_path_accessor
+from cloudpathlib import S3Path, S3Client
+
+# creates an accessor ".s3" that creates s3 paths using `S3Path(*, client=S3Client(...))`
+register_path_accessor("s3", S3Path, client=S3Client(profile_name='other_aws_profile'))
+
+test = pd.Series(
+    S3Path("s3://ladi/Images/FEMA_CAP/2020/70349").iterdir()
+)
+
+test.s3.bucket
+#> 0      ladi
+#> 1      ladi
+#>        ... 
+#> 577    ladi
+#> 578    ladi
+#> Length: 579, dtype: object
+```
+
+Another example is if you want to use Windows paths on a Posix machine. You can explicitly indicate you want
+to work with `PureWindowsPath` to do this on any operating system:
+
+```python
+import pandas as pd
+from pandas_path import register_path_accessor
+from pathlib import PureWindowsPath
+
+register_path_accessor("win", PureWindowsPath)
+
+test = pd.Series([
+    r"c:\test\f1.txt",
+    r"c:\test2\f2.txt",
+])
+
+test.win.parent
+#> 0     c:\test
+#> 1    c:\test2
+#> dtype: object
+```
+
 ### Limitations
 
 1. While most operations work out of the box, operator chaining with `/` will not work as expected since we always return the series itself, not the accessor.
@@ -175,3 +250,5 @@ pd.Series(['a', 'b', 'c']).path / pd.Series(['1', '2', '3']).path
 That's all folks, enjoy!
 
 Developed and maintained by your friends at DrivenData! [ml competitions](https://www.drivendata.org/) | [ai consulting](http://drivendata.co/)
+
+<sup>Some examples created with [reprexlite](https://github.com/jayqi/reprexlite) v0.4.2 to ensure reproducibility.</sup>
