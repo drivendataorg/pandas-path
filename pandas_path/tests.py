@@ -100,9 +100,7 @@ def test_operators(sample_series, sample_paths):
         sample_series.path.parent.path / "new_folder" / "new_file"
 
     # chaining - explicit
-    expected = [
-        str(Path(f).parent / "new_sub_folder" / "new_file.txt") for f in sample_paths
-    ]
+    expected = [str(Path(f).parent / "new_sub_folder" / "new_file.txt") for f in sample_paths]
     assert (
         (sample_series.path.parent.path / "new_sub_folder").path / "new_file.txt"
     ).tolist() == expected
@@ -117,9 +115,7 @@ def test_elementwise(pd, sample_series, sample_paths):
     assert (sample_series.path.parent.path / to_append).tolist() == expected
     assert (sample_series.path.parent.path / np.array(to_append)).tolist() == expected
     assert (sample_series.path.parent.path / pd.Series(to_append)).tolist() == expected
-    assert (
-        sample_series.path.parent.path / pd.Series(to_append).path
-    ).tolist() == expected
+    assert (sample_series.path.parent.path / pd.Series(to_append).path).tolist() == expected
 
     expected = [str(p / Path(f)) for f, p in zip(sample_paths, to_prepend)]
     assert (to_prepend / sample_series.path).tolist() == expected

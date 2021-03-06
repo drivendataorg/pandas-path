@@ -8,7 +8,7 @@ import pandas as pd
 @pd.api.extensions.register_series_accessor("path")
 @pd.api.extensions.register_index_accessor("path")
 class PathAccessor:
-    """ Adds a `.path` accessor to Series and Index objects so that all of the methods
+    """Adds a `.path` accessor to Series and Index objects so that all of the methods
         from pathlib.Path are available.
 
         Register with pandas by importing. No other changes necessary.
@@ -35,9 +35,7 @@ class PathAccessor:
         [Path(x) for x in obj.values]
 
     def __getattr__(self, attr):
-        apply_series = (
-            self._obj.to_series() if isinstance(self._obj, pd.Index) else self._obj
-        )
+        apply_series = self._obj.to_series() if isinstance(self._obj, pd.Index) else self._obj
 
         # check the type of this attribute on a Path object
         attr_type = getattr(type(Path()), attr, None)
@@ -105,9 +103,7 @@ class PathAccessor:
         return elementwise_result
 
     def _path_join(self, other, side):
-        if isinstance(
-            other, (list, tuple, np.ndarray, pd.Series, pd.Index, PathAccessor)
-        ):
+        if isinstance(other, (list, tuple, np.ndarray, pd.Series, pd.Index, PathAccessor)):
             return self._elementwise(other, side)
         else:
             return self.__getattr__(side)(other)
