@@ -25,6 +25,8 @@ def pd():
 def pandas_path():
     import pandas_path
 
+    assert pandas_path.__version__ is not None
+
     return pandas_path
 
 
