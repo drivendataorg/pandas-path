@@ -7,22 +7,20 @@ import pandas as pd
 
 def path_accessor_factory(path_class, *args, **kwargs):
     class PathAccessor:
-        """Adds a `.path` accessor to Series and Index objects so that all of the methods
-            from pathlib.Path are available.
+        _doc_str_f = """A `.{accessor_name}` accessor on Series and Index objects so that all of the methods
+            from {path_class} are available.
 
-            Register with pandas by importing. No other changes necessary.
-
-            Note: Will return a `str` rather than a Path object so that joining with existing
+            Note: Always will return a `str` rather than a {path_class} object so that joining with existing
                 dataframes, etc. will continue to work.
 
-            Note: May not be performant on extremely long lists since we cast to `Path`
+            Note: May not be performant on extremely long lists since we cast to `{path_class}`
             for every operation.
 
         Raises
         ------
         AttributeError
             If the method we try to use on the accessor is not a function or property or
-            is not an attribute on Path, raise an AttributeError.
+            is not an attribute on {path_class}, raise an AttributeError.
         """
 
         def __init__(self, pandas_obj):
@@ -38,6 +36,10 @@ def path_accessor_factory(path_class, *args, **kwargs):
             return path_class(path_str, *args, **kwargs)
 
         def __getattr__(self, attr):
+            # return accessor name for clarity
+            if attr == "__name__":
+                return self.__class__.__name__
+
             apply_series = self._obj.to_series() if isinstance(self._obj, pd.Index) else self._obj
 
             # check the type of this attribute on a Path object
@@ -126,6 +128,13 @@ def path_accessor_factory(path_class, *args, **kwargs):
 
 def register_path_accessor(accessor_name, path_class, *args, **kwargs):
     accessor_class = path_accessor_factory(path_class, *args, **kwargs)
+
+    # set name and docstring dynamically for reference
+    accessor_class.__name__ = path_class.__name__ + "Accessor"
+    accessor_class.__doc__ = accessor_class._doc_str_f.format(
+        path_class=path_class.__name__, accessor_name=accessor_name
+    )
+
     pd.api.extensions.register_series_accessor(accessor_name)(accessor_class)
     pd.api.extensions.register_index_accessor(accessor_name)(accessor_class)
 

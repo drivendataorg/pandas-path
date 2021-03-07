@@ -162,3 +162,6 @@ def test_custom_accessor(pd, sample_paths):
     )
 
     assert (win_series.win.parent == (win_series.str.rsplit("\\", 1).str[0])).all()
+
+    assert win_series.win.__name__ == "PureWindowsPathAccessor"
+    assert "PureWindowsPath" in win_series.win.__doc__
