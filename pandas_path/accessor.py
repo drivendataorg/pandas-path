@@ -1,4 +1,3 @@
-from pathlib import Path
 from types import FunctionType, LambdaType, MethodType
 
 import numpy as np
@@ -42,11 +41,12 @@ def path_accessor_factory(path_class, *args, **kwargs):
 
             apply_series = self._obj.to_series() if isinstance(self._obj, pd.Index) else self._obj
 
-            # check the type of this attribute on a Path object
+            # check the type of this attribute on a Path object (we need an actual instance) since
+            # the super classes dispatch
             if isinstance(self._obj.values[0], path_class):
                 attr_type = getattr(type(self._obj.values[0]), attr, None)
             else:
-                attr_type = getattr(type(self._to_path_object("")), attr, None)
+                attr_type = getattr(type(self._to_path_object(self._obj.values[0])), attr, None)
 
             # if we're asking for a property, do the calculation and return the result
             if isinstance(attr_type, property):
@@ -137,7 +137,3 @@ def register_path_accessor(accessor_name, path_class, *args, **kwargs):
 
     pd.api.extensions.register_series_accessor(accessor_name)(accessor_class)
     pd.api.extensions.register_index_accessor(accessor_name)(accessor_class)
-
-
-# default to registering `Path` to `path`
-register_path_accessor("path", Path)

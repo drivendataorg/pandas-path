@@ -10,6 +10,42 @@ This package is for you. Just one import adds a `.path` accessor to any pandas S
 
 <small> * If not, you should.</small>
 
+## Quickstart
+
+Install latest `pandas-path` with `pip`.
+
+```bash
+pip install pandas-path
+```
+
+Import `path` from `pandas_path`, and then the `.path` accessor will be available on any Series or Index:
+
+```python
+# this is all you need
+from pandas_path import path
+```
+
+Now you can use all the pathlib methods using the `.path` accessor on any Series in `pandas`!
+
+```python
+pd.Series([
+    'cat/1.jpg',
+    'cat/2.jpg',
+    'dog/1.jpg',
+    'dog/2.jpg',
+]).path.parent
+
+# 0    cat
+# 1    cat
+# 2    dog
+# 3    dog
+# dtype: object
+```
+
+
+## Examples
+
+
 Here's an example:
 
 ```python
@@ -18,7 +54,7 @@ import pandas as pd
 
 # This is the only line you need to register `.path` as an accessor
 # on any Series or Index in pandas.
-import pandas_path
+from pandas_path import path
 
 # we'll make an example series from the py files in this repo;
 # note that every element here is just a string--no need to make Path objects yourself
