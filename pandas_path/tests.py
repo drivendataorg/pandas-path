@@ -24,6 +24,7 @@ def pd():
 @pytest.fixture
 def pandas_path():
     import pandas_path
+    from pandas_path import path  # noqa
 
     assert pandas_path.__version__ is not None
 
