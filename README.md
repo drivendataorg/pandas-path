@@ -271,7 +271,7 @@ pd.Series(['a', 'b', 'c']) / pd.Series(['1', '2', '3']).path
 # dtype: object
 ```
 
-Instead, use the path accessor on the right-hand side as well.
+Instead, use the path accessor on the left-hand side as well.
 
 ```python
 pd.Series(['a', 'b', 'c']).path / pd.Series(['1', '2', '3']).path
