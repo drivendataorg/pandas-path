@@ -18,11 +18,11 @@ Install latest `pandas-path` with `pip`.
 pip install pandas-path
 ```
 
-Import `path` from `pandas_path`, and then the `.path` accessor will be available on any Series or Index:
+Import `pandas_path.path`, and then the `.path` accessor will be available on any Series or Index:
 
 ```python
 # this is all you need
-from pandas_path import path
+import pandas_path.path
 ```
 
 Now you can use all the pathlib methods using the `.path` accessor on any Series in `pandas`!
@@ -54,10 +54,11 @@ import pandas as pd
 
 # This is the only line you need to register `.path` as an accessor
 # on any Series or Index in pandas.
-from pandas_path import path
+import pandas_path.path
 
 # we'll make an example series from the py files in this repo;
 # note that every element here is just a string--no need to make Path objects yourself
+# ... but of course, this also works with `Path` as well
 file_paths = pd.Series(str(s) for s in Path().glob('**/*.py'))
 
 # 0                   setup.py
