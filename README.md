@@ -2,7 +2,6 @@
 
 [![PyPI](https://img.shields.io/pypi/v/pandas-path.svg)](https://pypi.org/project/pandas-path/)
 [![tests](https://github.com/drivendataorg/pandas-path/workflows/tests/badge.svg?branch=master)](https://github.com/drivendataorg/pandas-path/actions?query=workflow%3Atests+branch%3Amaster)
-[![codecov](https://codecov.io/gh/drivendataorg/pandas-path/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/pandas-path)
 
 Love [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html)*? Love pandas? Wish it were easy to use pathlib methods on pandas Series?
 
